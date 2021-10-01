@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo ./root-install 
+sudo ./root
 
 if [[ -d $HOME/Downloads ]]; then
     cd $HOME/Downloads

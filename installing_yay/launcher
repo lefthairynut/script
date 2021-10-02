@@ -1,0 +1,18 @@
+#!/bin/bash
+
+sudo ./root
+
+if [[ -d $HOME/Downloads ]]; then
+    cd $HOME/Downloads
+    git clone 'https://aur.archlinux.org/yay.git'
+
+else 
+
+    mkdir $HOME/Downloads
+    cd $HOME/Downloads
+    git clone 'https://aur.archlinux.org/yay.git'
+
+fi
+
+cd yay
+makepkg -si --noconfirm

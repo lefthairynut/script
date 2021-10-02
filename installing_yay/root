@@ -1,0 +1,6 @@
+#!/bin/bash
+# Need to run this script with sudo privilege.
+
+if [[ ! $(pacman -Qs git > /dev/null) ]]; then
+    pacman -S git --noconfirm
+fi

@@ -1,5 +1,5 @@
 #!/bin/bash
-d
+
 if  [[ $# -ne 2 ]]; then 
     echo "You have to provide 2 arguments."
     exit 1

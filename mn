@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [[ ! $(man $1 2> /dev/null) ]]; then
+    exit 1
+fi
+
+if [[ ! -d /tmp/mn ]]; then
+    mkdir /tmp/mn
+    echo "/tmp/mn created."
+fi
+
+cd /tmp/mn 
+
+gunzip --to-stdout $(man --where $1)| groff -mandoc -Thtml > $1.html 2> log
+sed -i "/<\/style>/r $HOME/.local/bin/styles.css" $1.html
+
+wkhtmltopdf $1.html $1.pdf 2> /dev/null
+okular $1.pdf & 2> /dev/null

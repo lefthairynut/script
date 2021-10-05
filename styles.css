@@ -1,0 +1,35 @@
+<style type="text/css">
+    body {
+        font-family: Whitney Medium;
+        background: #181a1b;
+    }
+    p {
+        font-size: 20px;
+        color: white;
+    }
+    h2 {
+        
+        font-size: 25px;
+        display:inline;
+        color: yellow;
+    }
+    h1 {
+        font-size: 30px;
+        color: white;
+    }
+    b {
+        color: #5ce7ad;
+    }
+    i {
+        color: #ff4b4b;
+    }    
+    a {
+        font-size: 20px;
+        color: #3391ff
+    }
+    pre {
+        color: white;
+        font-size: 15px;
+    }
+</style>
+

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+if  [[ $# -ne 2 ]]; then 
+    echo "You have to provide 2 arguments."
+    exit 1
+fi
+
+# If I use basename instead of realpath, ../.vimrc gives directory. why?
+token_path=$(realpath $1)   # Absoulute path to the package
+token_name=$(basename $1)   # Name of the package
+
+# If the token is hidden, replace . with dot- in the name of package
+if [[ -a $token_path ]]; then
+    tmp=$(echo $token_name| sed 's/\./dot-/')
+    token_name=$tmp 
+fi
+echo $token_path
+# Getting the path of file wich should be created inside root package directory.
+token_path_edited=$(echo $token_path | sed 's/\/home\/ali\///')
+echo $token_path_edited # see if the directory structure for root package is correct. needed paranteses.
+# create the proper directory.
+
+if [[ -d $token_path ]]; then
+
+    mkdir -p ~/$2/$token_name/$token_path_edited
+    cp -r $token_path/. ~/$2/$token_name/$token_path_edited
+    echo "~/$2/$token_name/$token_path_edited is created."
+
+elif [[ -f $token_path ]]; then
+    mkdir -p ~/$2/$token_name
+    cp $token_path ~/$2/$token_name
+    echo "~/$2/$token_name is created."
+
+
+else
+
+    echo "$token_path is not valid"
+    exit 1
+
+fi

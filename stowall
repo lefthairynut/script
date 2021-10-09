@@ -1,0 +1,2 @@
+#!/bin/bash
+stow $(ls -a | egrep -v '.git*')

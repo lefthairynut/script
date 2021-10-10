@@ -2,19 +2,6 @@
 
 # Current bugs: doesn't work for the files with spaces in their names.
 
-
-#echo $1 | sed 's|^.*\/||'
-#echo $(dirname $1) 
-#echo $(basename $(dirname $1))
-#echo $HOME
-
-#if [ "echo $(dirname $1)" = "echo $HOME" ]; then
-#    echo "The file isn't in the home directory"
-#fi
-    
-#if [[ $(dirname $1) != $HOME ]]; then
-#    echo ""
-#fi
 rpath="$(realpath $1)"
 if [[ -f $rpath ]]; then        # If $rpath is a file
     echo $rpath
@@ -72,71 +59,3 @@ elif [[ -d $rpath ]]; then
     cd "$HOME/dot"
     stow $(basename $rpath)
 fi
-#sed 's/^.*\///'
-#if  [[ $# -ne 2 ]]; then 
-#    echo "You have to provide 2 arguments."
-#    exit 1
-#fi
-#
-## If I use basename instead of realpath, ../.vimrc gives directory. why?
-#token_path=$(realpath $1)   # Absoulute path to the package
-#token_name=$(basename $1)   # Name of the package
-#original_token_name=$token_name
-#
-## If the token is hidden, replace . with dot- in the name of package
-#if [[ -a $token_path ]]; then
-#    tmp=$(echo $token_name| sed 's/\./dot-/')
-#    token_name=$tmp 
-#fi
-##echo $token_path
-## Getting the path of file wich should be created inside root package directory.
-#token_path_edited=$(echo $token_path | sed 's/\/home\/ali\///')
-##echo $token_path_edited # see if the directory structure for root package is correct. needed paranteses.
-## create the proper directory.
-#
-#if [[ -d $token_path ]]; then
-#
-#    mkdir -p ~/$2/$token_name/$token_path_edited
-#    cp -r $token_path/. ~/$2/$token_name/$token_path_edited
-#    echo "~/$2/$token_name/$token_path_edited is created."
-#
-#elif [[ -f $token_path ]]; then
-#
-#    remained_path=$(echo $token_path_edited | sed -e "s|$HOME||" -e "s|$original_token_name$||")
-#    echo "${remained_path}"
-#
-#    if [[ -n $remained_path ]]; then
-#        remained_wo_slash=${remained_path%/*}
-#        echo "Do you want to add ${remained_wo_slash##*/}?"
-#
-#        mkdir -p ~/$2/$token_name
-#        cp $token_path ~/$2/$token_name
-#        echo "~/$2/$token_name is created."
-#
-#    fi
-#
-#    mkdir -p ~/$2/$token_name
-#    cp $token_path ~/$2/$token_name
-#    echo "~/$2/$token_name is created."
-#
-#
-#else
-#
-#    echo "$token_path is not valid"
-#    exit 1
-#
-#fi
-#
-#echo "token_name: $token_name"
-#echo "original_token_name: $original_token_name"
-#echo "token_path: $token_path"
-#echo "token_path_edited: $token_path_edited"
-##echo $token_path_edited | sed 's/\/home\/ali//'
-## If you have / in the variable, use the | seperator.
-#remained_path=$(echo $token_path_edited | sed -e "s|$HOME||" -e "s|$original_token_name$||")
-#echo "${remained_path}"
-#if [[ -n $remained_path ]]; then
-#    remained_wo_slash=${remained_path%/*}
-#    echo "Do you want to add ${remained_wo_slash##*/}?"
-#
-#fi

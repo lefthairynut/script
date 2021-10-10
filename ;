@@ -1,0 +1,3 @@
+#!/bin/bash
+read -p "target Directory name: hello $(echo -e $'\n')You wanna change it?" ans
+echo $ans

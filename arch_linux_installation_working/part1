@@ -1,0 +1,55 @@
+#!/usr/bin/bash
+#
+# Partitioning the disk
+
+# Format the partitoins
+
+# Mount the filesystem
+
+# Select the mirrors
+#curl 'https://archlinux.org/mirrorlist/?country=IR&protocol=http&protocol=https&ip_version=4' | cut -c2- | tee /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
+curl 'https://archlinux.org/mirrorlist/?country=IR&protocol=http&protocol=https&ip_version=4' | cut -c2- > /etc/pacman.d/mirrorlist
+
+
+# Updating the system clock
+timedatectl set-ntp true
+
+help()
+{
+    echo "Usage: arch-install <state> <DE/WM>"
+}
+
+pacstrap_packages='base base-devel linux'
+if [ -n $1 ]; then # -n -- True if the string is non-zero.
+    case $1 in 
+        'vm')               
+            pacstrap /mnt $pacstrap_packages
+        ;;
+
+        'metal')            
+            pacstrap /mnt $(echo $pacstrap_packages) linux-firmware
+        ;;    
+        
+        *) 
+            echo "Invalid input."
+            help
+            exit 1
+        ;;
+
+    esac
+
+else
+    echo "No input."
+    help
+    exit 1
+fi
+#  Configuring the system
+genfstab -U /mnt >> /mnt/etc/fstab
+
+curl 'https://archlinux.org/mirrorlist/?country=IR&protocol=http&protocol=https&ip_version=4' | cut -c2- > /etc/pacman.d/mirrorlist
+
+export de=$2
+echo $de
+cp part2 /mnt
+chmod +x /mnt/part2
+arch-chroot /mnt ./part2

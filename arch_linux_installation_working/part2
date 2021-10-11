@@ -1,0 +1,63 @@
+#!/usr/bin/bash
+
+# Set timezone
+ln -sf /usr/share/zoneinfo/Asia/Tehran /etc/localtime
+hwclock --systohc
+
+# Localization
+sed -i '177s/.//' /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+
+# Network Configuration
+echo "swartz" >> /etc/hostname
+
+# /Creating /etc/hosts
+echo "127.0.0.1 localhost" >> /etc/hosts
+echo "::1 localhost" >> /etc/hosts
+echo "127.0.1.1 swartz.localdomain swartz" >> /etc/hosts
+
+# Root Password
+passwd
+
+# Installing bootloader and networkmanger and configuring them
+pacman -S --noconfirm grub networkmanager
+grub-install /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+systemctl enable NetworkManager
+
+# Installing other neccessary packages pacman -S --noconfirm xorg xorg-server gnome firefox vlc goldendict nautilus dolphin konsole telegram-desktop calibre gnome-shell gnome-tweaks git
+#systemctl enable gdm.service
+
+useradd -mG wheel ali
+passwd ali
+sed -i '85s/..//' /etc/sudoers
+
+echo "exec i3" > /home/ali/.xinitrc
+
+necessary_packages="xorg nautilus dolphin konsole alacritty exa bat vim mlocate fish zsh zsh-autosuggestions zsh-completions zsh-syntax-highlighting openssh" 
+# Installing other neccessary packages pacman -S --noconfirm xorg xorg-server gnome firefox vlc goldendict nautilus dolphin konsole telegram-desktop calibre gnome-shell gnome-tweaks git
+if [ -n $de ]; then # -n -- True if the string is non-zero.
+    case $de in 
+        'i3')               
+            pacman --noconfirm -S $(echo $necessary_packages) xorg-xinit i3-gaps i3blocks dmenu noto-fonts noto-fonts-emoji kvantum-qt5 qt5ct lxsession
+            echo "exec i3" > /home/ali/.xinitrc
+        ;;
+
+        #'gnome')            
+        #    pacstrap /mnt "echo $pacstrap_packages linux-firmware"
+        #;;    
+
+        #'kde')               
+        #    pacstrap /mnt $pacstrap_packages
+        #;;
+
+        *)
+            echo "$de is not in the list of DE/WMs."
+            exit 1
+    esac
+
+else
+    echo "No input"
+    exit 1
+fi

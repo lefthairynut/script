@@ -33,14 +33,16 @@ useradd -mG wheel ali
 passwd ali
 sed -i '85s/..//' /etc/sudoers
 
-echo "exec i3" > /home/ali/.xinitrc
+#echo "exec i3" > /home/ali/.xinitrc
 
 necessary_packages="xorg nautilus dolphin konsole alacritty exa bat vim mlocate fish zsh zsh-autosuggestions zsh-completions zsh-syntax-highlighting openssh" 
 # Installing other neccessary packages pacman -S --noconfirm xorg xorg-server gnome firefox vlc goldendict nautilus dolphin konsole telegram-desktop calibre gnome-shell gnome-tweaks git
-if [ -n $de ]; then # -n -- True if the string is non-zero.
-    case $de in 
+
+if [ -n $2 ]; then # -n -- True if the string is non-zero.
+    case $2 in 
         'i3')               
             pacman --noconfirm -S $(echo $necessary_packages) xorg-xinit i3-gaps i3blocks dmenu noto-fonts noto-fonts-emoji kvantum-qt5 qt5ct lxsession
+            mkdir /home/ali
             echo "exec i3" > /home/ali/.xinitrc
         ;;
 
@@ -53,11 +55,13 @@ if [ -n $de ]; then # -n -- True if the string is non-zero.
         #;;
 
         *)
-            echo "$de is not in the list of DE/WMs."
+            echo "$2 is not in the list of DE/WMs."
+            help
             exit 1
     esac
 
 else
     echo "No input"
+    help
     exit 1
 fi

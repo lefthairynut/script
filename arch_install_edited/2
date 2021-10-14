@@ -27,37 +27,40 @@ grub-mkconfig -o /boot/grub/grub.cfg
 systemctl enable NetworkManager
 
 # Installing other neccessary packages pacman -S --noconfirm xorg xorg-server gnome firefox vlc goldendict nautilus dolphin konsole telegram-desktop calibre gnome-shell gnome-tweaks git
-#systemctl enable gdm.service
+systemctl enable gdm.service
 
 useradd -mG wheel ali
 passwd ali
 sed -i '85s/..//' /etc/sudoers
 
-echo "exec i3" > /home/ali/.xinitrc
+#echo "exec i3" > /home/ali/.xinitr
 
-necessary_packages="xorg nautilus dolphin konsole alacritty exa bat vim mlocate fish zsh zsh-autosuggestions zsh-completions zsh-syntax-highlighting openssh" 
+necessary_packages="xorg nautilus dolphin konsole alacritty exa bat vim mlocate fish zsh zsh-auto-suggestions zsh-completions zsh-syntax-highlighting openssh" 
 # Installing other neccessary packages pacman -S --noconfirm xorg xorg-server gnome firefox vlc goldendict nautilus dolphin konsole telegram-desktop calibre gnome-shell gnome-tweaks git
-if [ -n $de ]; then # -n -- True if the string is non-zero.
-    case $de in 
+
+if [ -n $2 ]; then # -n -- True if the string is non-zero.
+    case $2 in 
         'i3')               
-            pacman --noconfirm -S $(echo $necessary_packages) xorg-xinit i3-gaps i3blocks dmenu noto-fonts noto-fonts-emoji kvantum-qt5 qt5ct lxsession
+            pacman -S "$necessary_packages xorg-xinit i3-gaps i3blocks dmenu noto-fonts noto-fonts-emoji kvantummanager qt5ct lxsession "
             echo "exec i3" > /home/ali/.xinitrc
         ;;
 
         #'gnome')            
-        #    pacstrap /mnt "echo $pacstrap_packages linux-firmware"
+        #    pacstrap /mnt "echo "$pacstrap_packages" linux-firmware"
         #;;    
 
         #'kde')               
-        #    pacstrap /mnt $pacstrap_packages
+        #    pacstrap /mnt "$pacstrap_packages"
         #;;
 
         *)
-            echo "$de is not in the list of DE/WMs."
+            echo "$2 is not in the list of DE/WMs."
+            help
             exit 1
     esac
 
 else
-    echo "No input"
+    echo "no input"
+    help
     exit 1
 fi

@@ -49,7 +49,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 curl 'https://archlinux.org/mirrorlist/?country=IR&protocol=http&protocol=https&ip_version=4' | cut -c2- > /etc/pacman.d/mirrorlist
 
 export de=$2
-#echo $de
+echo $de
 cp part2 /mnt
 chmod +x /mnt/part2
 arch-chroot /mnt ./part2

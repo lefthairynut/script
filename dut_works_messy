@@ -1,0 +1,61 @@
+#!/bin/bash 
+
+# Current bugs: doesn't work for the files with spaces in their names.
+
+rpath="$(realpath $1)"
+if [[ -f $rpath ]]; then        # If $rpath is a file
+    echo $rpath
+    if [[ "$(dirname $rpath)" != "$HOME" ]]; then       # If $rpath isn't in home directory
+
+        read -p "Are you sure you want to add \""$(basename $rpath)"\" \
+file and not the <"$(basename $(dirname $rpath))"> directory? [Y/N] " answer
+        
+        if [[ "${answer,,}" = "y" ]]; then
+            #mkdir "~/dot/$(basename $rpath)"
+            rpath_edited=$(echo $rpath | sed -e "s|$HOME||" -e "s|$(basename $rpath)$||")
+            #echo $path_edited
+            dest="$HOME/dot/$(basename $rpath)/$rpath_edited"
+            mkdir -p $dest 
+            cp $rpath $dest 
+            rm $rpath
+            cd "$HOME/dot/"
+            echo "$(basename $rpath)"
+            stow $(basename $rpath) 
+
+        elif [[ "${answer,,}" = "n" ]]; then
+            rpath_edited=$(echo $rpath | sed -e "s|$HOME||" -e "s|$(basename $rpath)$||")
+            dest="$HOME/dot/$(basename $(dirname $rpath))$rpath_edited"
+            mkdir -p $dest
+            echo $dest
+            echo $rpath_edited
+            echo "$(dirname $rpath)"
+            echo $(basename $(dirname $rpath))
+            cp -r "$(dirname $rpath)"/. "${dest}" 
+            rm -r $(dirname $rpath)
+            cd "$HOME/dot/"
+            stow $(basename $(dirname $rpath))
+        
+        else
+            echo "invalid input"
+            exit 1;
+
+        fi
+    else
+        dest="$HOME/dot/$(basename $1)"
+        mkdir $dest
+        cp $rpath $dest
+        rm $rpath
+        cd "$HOME/dot"
+        stow $(basename $1)
+    fi
+elif [[ -d $rpath ]]; then
+    rpath_edited=$(echo $rpath | sed -e "s|$HOME||") 
+    dest="$HOME/dot/$(basename $rpath)$rpath_edited"
+    echo $rpath_edited
+    echo $dest
+    mkdir -p $dest
+    cp -r "$rpath/." $dest
+    rm -r $rpath
+    cd "$HOME/dot"
+    stow $(basename $rpath)
+fi
